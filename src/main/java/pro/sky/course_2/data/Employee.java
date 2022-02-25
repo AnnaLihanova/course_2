@@ -1,4 +1,4 @@
-package pro.sky.course_2;
+package pro.sky.course_2.data;
 
 import java.util.Objects;
 
