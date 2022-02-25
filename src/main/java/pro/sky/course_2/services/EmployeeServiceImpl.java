@@ -1,10 +1,15 @@
-package pro.sky.course_2;
+package pro.sky.course_2.services;
 
 import org.springframework.stereotype.Service;
+import pro.sky.course_2.Employee;
+import pro.sky.course_2.interfaces.EmployeeService;
+import pro.sky.course_2.exceptions.ArrayOverflowException;
+import pro.sky.course_2.exceptions.EmployeeAlreadyAddedException;
+import pro.sky.course_2.exceptions.EmployeeNotFoundException;
 
 
 @Service
-public class EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService {
     static Employee[] employees = {
             new Employee("Ivanov", "Ivan"),
             null,
@@ -14,6 +19,7 @@ public class EmployeeService {
             new Employee("Тарасова", "Татьяна"),
     };
 
+    @Override
     public Employee addEmployee(String lastName, String firstName) {
         Employee newEmployee = new Employee(lastName, firstName);
         for (int i = 0; i < employees.length; i++) {
@@ -30,6 +36,7 @@ public class EmployeeService {
         throw new ArrayOverflowException("Employee can't be added. Array is full");
     }
 
+    @Override
     public Employee removeEmployee(String lastName, String firstName) {
         Employee newEmployee = new Employee(lastName, firstName);
         for (int i = 0; i < employees.length; i++) {
@@ -41,6 +48,7 @@ public class EmployeeService {
         throw new EmployeeNotFoundException("Employee not found");
     }
 
+    @Override
     public Employee findEmployee(String lastName, String firstName) {
         Employee newEmployee = new Employee(lastName, firstName);
         for (int i = 0; i < employees.length; i++) {
