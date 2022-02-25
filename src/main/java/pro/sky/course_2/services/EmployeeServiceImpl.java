@@ -1,62 +1,62 @@
 package pro.sky.course_2.services;
 
 import org.springframework.stereotype.Service;
-import pro.sky.course_2.Employee;
+import pro.sky.course_2.data.Employee;
 import pro.sky.course_2.interfaces.EmployeeService;
-import pro.sky.course_2.exceptions.ArrayOverflowException;
 import pro.sky.course_2.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.course_2.exceptions.EmployeeNotFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    static Employee[] employees = {
+    List<Employee> employees = new ArrayList<>(List.of(
             new Employee("Ivanov", "Ivan"),
-            null,
             new Employee("Шариков", "Роман"),
             new Employee("Дудник", "Петр"),
             new Employee("Кромкина", "Мария"),
-            new Employee("Тарасова", "Татьяна"),
-    };
+            new Employee("Тарасова", "Татьяна")
+    ));
 
     @Override
     public Employee addEmployee(String lastName, String firstName) {
         Employee newEmployee = new Employee(lastName, firstName);
-        for (int i = 0; i < employees.length; i++) {
-            if (employees[i] != null && employees[i].equals(newEmployee)) {
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.contains(newEmployee)) {
                 throw new EmployeeAlreadyAddedException("Employee already added");
             }
         }
-        for (int i = 0; i < employees.length; i++) {
-            if (employees[i] == null) {
-                employees[i] = newEmployee;
-                return newEmployee;
-            }
-        }
-        throw new ArrayOverflowException("Employee can't be added. Array is full");
+        employees.add(newEmployee);
+        return newEmployee;
     }
 
     @Override
     public Employee removeEmployee(String lastName, String firstName) {
-        Employee newEmployee = new Employee(lastName, firstName);
-        for (int i = 0; i < employees.length; i++) {
-            if (employees[i] != null && employees[i].equals(newEmployee)) {
-                employees[i] = null;
-                return null;
+        Employee removeEmployee = new Employee(lastName, firstName);
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.contains(removeEmployee)) {
+                employees.remove(removeEmployee);
+                return removeEmployee;
             }
         }
         throw new EmployeeNotFoundException("Employee not found");
     }
 
     @Override
-    public Employee findEmployee(String lastName, String firstName) {
-        Employee newEmployee = new Employee(lastName, firstName);
-        for (int i = 0; i < employees.length; i++) {
-            if (employees[i] != null && employees[i].equals(newEmployee)) {
-                return employees[i];
+    public boolean findEmployee(String lastName, String firstName) {
+        Employee findEmployee = new Employee(lastName, firstName);
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.contains(findEmployee)) {
+                return true;
             }
         }
         throw new EmployeeNotFoundException("Employee not found");
+    }
+
+    @Override
+    public List<Employee> printListOfEmployee() {
+        return employees;
     }
 }
 
