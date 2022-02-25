@@ -1,5 +1,7 @@
 package pro.sky.course_2;
 
+import java.util.Objects;
+
 public class Employee {
     private final String lastName;
     private final String firstName;
@@ -19,5 +21,18 @@ public class Employee {
 
     public String toString() {
         return getLastName() + " " + getFirstName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return lastName.equals(employee.lastName) && firstName.equals(employee.firstName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lastName, firstName);
     }
 }
